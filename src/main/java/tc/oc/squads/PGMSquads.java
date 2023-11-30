@@ -33,5 +33,4 @@ public class PGMSquads extends JavaPlugin {
 
     getLogger().info("Squads have been enabled");
   }
-
 }

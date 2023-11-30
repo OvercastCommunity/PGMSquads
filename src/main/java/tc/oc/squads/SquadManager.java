@@ -44,6 +44,7 @@ public class SquadManager implements SquadIntegration, Listener {
   private final Map<UUID, ScheduledFuture<?>> playerLeave = new HashMap<>();
 
   private final ScheduledExecutorService executor = PGM.get().getExecutor();
+  private final AFKDetection afk = new AFKDetection();
 
   public SquadManager(PGMSquads plugin) {
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -213,6 +214,7 @@ public class SquadManager implements SquadIntegration, Listener {
                   s.getPlayers().stream()
                       .map(uuid -> event.getMatch().getPlayer(uuid))
                       .filter(Objects::nonNull)
+                      .filter(mp -> !afk.isAFK(mp.getBukkit()))
                       .collect(Collectors.toList());
               if (players.isEmpty()) return;
               MatchPlayer leader = event.getMatch().getPlayer(s.getLeader());
